@@ -1,2 +1,0 @@
-rosku
--DCATKIN_DEVEL_PREFIX=/home/bf1/Music/ros_y/devel -DCMAKE_INSTALL_PREFIX=/home/bf1/Music/ros_y/install -G Unix Makefiles

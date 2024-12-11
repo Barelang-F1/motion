@@ -1,8 +1,0 @@
-prefix=/home/bf1/Music/ros_y/install
-
-Name: rosku
-Description: Description of rosku
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

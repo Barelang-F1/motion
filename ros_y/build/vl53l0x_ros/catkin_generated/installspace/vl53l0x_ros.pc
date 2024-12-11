@@ -1,8 +1,0 @@
-prefix=/home/bf1/Music/ros_y/install
-
-Name: vl53l0x_ros
-Description: Description of vl53l0x_ros
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
