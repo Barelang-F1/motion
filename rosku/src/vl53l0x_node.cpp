@@ -17,10 +17,12 @@
 #define LOX1_ADDRESS 0x30
 #define LOX2_ADDRESS 0x32
 #define LOX3_ADDRESS 0x34 // Alamat sensor 3
+#define LOX4_ADDRESS 0x36 // Alamat sensor 4
 
-#define SHT_LOX1 20 // GPIO untuk sensor 1
-#define SHT_LOX2 21 // GPIO untuk sensor 2
+#define SHT_LOX1 21 // GPIO untuk sensor 1
+#define SHT_LOX2 20 // GPIO untuk sensor 2
 #define SHT_LOX3 19 // GPIO untuk sensor 3
+#define SHT_LOX4 16 // GPIO untuk sensor 4
 
 static volatile bool keep_running = true;
 std::mutex i2c_mutex;
@@ -118,17 +120,20 @@ void setup_sensors()
     GPIO::setup(SHT_LOX1, GPIO::OUT, GPIO::LOW);
     GPIO::setup(SHT_LOX2, GPIO::OUT, GPIO::LOW);
     GPIO::setup(SHT_LOX3, GPIO::OUT, GPIO::LOW);
+    GPIO::setup(SHT_LOX4, GPIO::OUT, GPIO::LOW);
 
     // Reset semua sensor
     GPIO::output(SHT_LOX1, GPIO::LOW);
     GPIO::output(SHT_LOX2, GPIO::LOW);
     GPIO::output(SHT_LOX3, GPIO::LOW);
+    GPIO::output(SHT_LOX4, GPIO::LOW);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
     // Unreset semua sensor
     GPIO::output(SHT_LOX1, GPIO::HIGH);
     GPIO::output(SHT_LOX2, GPIO::HIGH);
     GPIO::output(SHT_LOX3, GPIO::HIGH);
+    GPIO::output(SHT_LOX4, GPIO::HIGH);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
     // Atur alamat untuk masing-masing sensor
@@ -166,17 +171,30 @@ void setup_sensors()
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         close(file3);
     }
+
+    reset_sensor(SHT_LOX4, LOX4_ADDRESS);
+    std::this_thread::sleep_for(std::chrono::milliseconds(10)); // Tunggu stabilisasi
+
+    // Kalibrasi sensor 3
+    int file4 = i2c_init("/dev/i2c-1", LOX4_ADDRESS);
+    if (file4 >= 0)
+    {
+        write_register(file4, 0x002E, 0x01); // Memulai kalibrasi
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        close(file4);
+    }
 }
 bool is_sensor_ready(int file)
 {
     uint8_t ready_status = read_register(file, 0x13); // Contoh register status
     return (ready_status & 0x01);                     // Periksa bit siap
 }
-void measure_distance(int file1, int file2, int file3, ros::Publisher &distance_pub)
+void measure_distance(int file1, int file2, int file3, int file4, ros::Publisher &distance_pub)
 {
     uint16_t distance1 = 0;
     uint16_t distance2 = 0;
     uint16_t distance3 = 0;
+    uint16_t distance4 = 0;
 
     if (is_sensor_ready(file1))
         distance1 = read_distance_retry(file1);
@@ -184,6 +202,8 @@ void measure_distance(int file1, int file2, int file3, ros::Publisher &distance_
         distance2 = read_distance_retry(file2);
     if (is_sensor_ready(file3))
         distance3 = read_distance_retry(file3);
+    if (is_sensor_ready(file4))
+        distance3 = read_distance_retry(file4);
 
     {
         std::lock_guard<std::mutex> lock(i2c_mutex);
@@ -205,6 +225,12 @@ void measure_distance(int file1, int file2, int file3, ros::Publisher &distance_
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
         distance3 = read_distance(file3);
     }
+    {
+        std::lock_guard<std::mutex> lock(i2c_mutex);
+        write_register(file4, 0x00, 0x01); // Memulai pengukuran untuk sensor 2
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        distance4 = read_distance(file4);
+    }
 
     // Publikasi hasil ke ROS sebagai array uint16
     std_msgs::UInt16MultiArray msg; // Menggunakan UInt16MultiArray
@@ -212,10 +238,11 @@ void measure_distance(int file1, int file2, int file3, ros::Publisher &distance_
     msg.data.push_back(distance1);  // Masukkan jarak dari sensor 1
     msg.data.push_back(distance2);  // Masukkan jarak dari sensor 2
     msg.data.push_back(distance3);  // Masukkan jarak dari sensor 2
+    msg.data.push_back(distance4);  // Masukkan jarak dari sensor 2
     distance_pub.publish(msg);
 
     // Log ke terminal
-    std::cout << "Sensor 1: " << distance1 << " mm, Sensor 2: " << distance2 << " mm, Sensor 3: " << distance3 << " mm" << std::endl;
+    std::cout << "Sensor 1: " << distance1 << " mm, Sensor 2: " << distance2 << " mm, Sensor 3: " << distance3 << " mm, sensor 4:" << distance4 << "mm" << std::endl;
 }
 
 int main(int argc, char **argv)
@@ -230,8 +257,9 @@ int main(int argc, char **argv)
     int file1 = i2c_init("/dev/i2c-1", LOX1_ADDRESS);
     int file2 = i2c_init("/dev/i2c-1", LOX2_ADDRESS);
     int file3 = i2c_init("/dev/i2c-1", LOX3_ADDRESS);
+    int file4 = i2c_init("/dev/i2c-1", LOX4_ADDRESS);
 
-    if (file1 < 0 || file2 < 0 || file3 < 0)
+    if (file1 < 0 || file2 < 0 || file3 < 0 || file4 < 0)
     {
         std::cerr << "Gagal membuka sensor VL53L0X!" << std::endl;
         return 1;
@@ -239,7 +267,7 @@ int main(int argc, char **argv)
 
     while (ros::ok() && keep_running)
     {
-        measure_distance(file1, file2, file3, distance_pub);
+        measure_distance(file1, file2, file3, file4, distance_pub);
         ros::spinOnce();
         std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Delay antar pengukuran
     }
@@ -247,5 +275,6 @@ int main(int argc, char **argv)
     close(file1);
     close(file2);
     close(file3);
+    close(file4);
     return 0;
 }

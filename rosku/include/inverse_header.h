@@ -90,10 +90,11 @@ int radToServomx(float rads)
 }
 
 
-// IK
-float c = 28.64;       // 23.45 // 21.70 //28.64
-float f = 65.00;       // 50.15
-float t = 81.00;       // 76.95
+    //   c       f       t
+// IK 21.00; 60.00; 71.80;
+float c =  21.00;       //28.64
+float f =  60.00;       //65.00
+float t =  71.80;       // 81.00
 float pi = 3.14285714; // 3.14285714;
 
 // panjang link kaki
@@ -272,7 +273,7 @@ float Kp = 0.2, Ki = 12, Kd = 0, T = 0.01;
 bool robotBergerak = false;
 
 //tof kanan kiri
-int kanan, kiri, depan;
+int Sensor_1, Sensor_2, Sensor_3, Sensor_4;
 
 
 void inverse_k(uint8_t dxl_id, float x, float y, float z, int kecepatan);
@@ -281,17 +282,29 @@ void trj_lurus(uint32_t dxl_id, float x0, float y0, float z0, float x1, float y1
 void trj_langkah(uint32_t dxl_id, float x0, float y0, float z0, float x1, float y1, float zp);
 void trj_start(uint32_t id_kakiL1, uint32_t id_kakiL2, uint32_t id_kakiL3, uint32_t id_kakiR1, uint32_t id_kakiR2, uint32_t id_kakiR3, int kecepatan, int dly_trj);
 void siap();
-void maju_robot();
+void coba_majuv2();
+void coba_mundurv4();
 void mundur_robot();
 void tangga_korban4();
-void tanggav2();
+void coba_maju1();
 void tanggav2_korban4();
 void kanan_robot();
 void kiri_robot();
 void putar_kiri();
 void putar_kanan();
-void imupid_jalanbiasa();
-void imupid_jalanrintangan();
+void coba_putar_kanan();
+void coba_putar_kiri();
+void coba_mundur();
+void coba_maju2();
+void siapv2();
+void coba_maju();
+void coba_putar_kananv2();
+void coba_putar_kiriv2();
+void siapv3();
+void coba_majuv3();
+void coba_majuv33();
+void coba_majurintangan();
+void coba_majurintangan1();
 
 int dxl_comm_result = COMM_TX_FAIL;                                                  // Communication result
 bool dxl_addparam_result = false;                                                    // addParam result

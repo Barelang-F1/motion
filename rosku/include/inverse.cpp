@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "cmath"
-
 // void inverse_k(uint8_t dxl_id, float x, float y, float z, int kecepatan);
 // void polinomial_trj(uint32_t dxl_id, float xp1, float yp1, float zp1, float xp2, float yp2, float zp2, float xp3, float yp3, float zp3, float xp4, float yp4, float zp4);
 // void trj_lurus(uint32_t dxl_id, float x0, float y0, float z0, float x1, float y1, float z1);
@@ -104,7 +103,7 @@ void inverse_k(uint8_t dxl_id, float x, float y, float z, int kecepatan)
 
     if (dxl_id == kL1 || dxl_id == kL2 || dxl_id == kL3)
     {
-        theta_c_real = 4504 - theta_c;
+        theta_c_real = 2048 - theta_c;
         theta_f_real = 512 - theta_f;
         theta_t_real = 512 + theta_t;
     }
@@ -379,107 +378,471 @@ void trj_start(uint32_t id_kakiR1, uint32_t id_kakiR2, uint32_t id_kakiR3, uint3
 
 void siap()
 {
-    trj_lurus(kR1, 40, 0, -90, 40, 0, -90);
-    trj_lurus(kR2, 40, 0, -90, 40, 0, -90);
-    trj_lurus(kR3, 40, 0, -90, 40, 0, -90);
+    trj_lurus(kR1, 80, 0, -60, 80, 0, -60);
+    trj_lurus(kR2, 80, 0, -60, 80, 0, -60);
+    trj_lurus(kR3, 80, 0, -60, 80, 0, -60);
 
-    trj_lurus(kL1, -40, 0, -90, -40, 0, -90);
-    trj_lurus(kL2, -40, 0, -90, -40, 0, -90);
-    trj_lurus(kL3, -40, 0, -90, -40, 0, -90);
-    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_slow, 15000);
+    trj_lurus(kL1, 80, 0, -60, 80, 0, -60);
+    trj_lurus(kL2, 80, 0, -60, 80, 0, -60);
+    trj_lurus(kL3, 80, 0, -60, 80, 0, -60);
+
+    // trj_lurus(R1, 40, 0, -60, 40, 0, -60);
+    // trj_lurus(R2, 40, 0, -60, 40, 0, -60);
+    // trj_lurus(R3, 40, 0, -60, 40, 0, -60);
+
+    // trj_lurus(L1, 40, 0, -60, 40, 0, -60);
+    // trj_lurus(L2, 40, 0, -60, 40, 0, -60);
+    // trj_lurus(L3, 40, 0, -60, 40, 0, -60);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 25000);
+    // trj_start(xx, xx, R3, xx, xx, xx,  ultra_fast, 25000);
 }
 
-void maju_robot()
+void coba_putar_kananv2()
 {
-
     // kanan
-    trj_langkah(kL1, L1_x, L1_y, L1_z, -40, 10, -60);
-    trj_langkah(kL3, L3_x, L3_y, L3_z, -40, 10, -60);
-    trj_langkah(kR2, R2_x, R2_y, R2_z, 40, 10, -60);
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 80, -15, -40);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, -15, -40);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 80, -15, -40);
 
-    trj_lurus(kR1, R1_x, R1_y, R1_z, 40, -5, -95); // 90
-    trj_lurus(kR3, R3_x, R3_y, R3_z, 40, -5, -70); // 90
-    trj_lurus(kL2, L2_x, L2_y, L2_z, -40, -5, -90);
-    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, med, 20000);
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 80, 0, -80); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, 0, -80); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 30000);
 
-    trj_langkah(kR1, R1_x, R1_y, R1_z, 40, 10, -60);
-    trj_langkah(kR3, R3_x, R3_y, R3_z, 40, 10, -60);
-    trj_langkah(kL2, L2_x, L2_y, L2_z, -40, 10, -60);
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 80, -15, -40);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, -15, -40);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 80, -15, -40);
 
-    trj_lurus(kL1, L1_x, L1_y, L1_z, -40, -5, -90); // 95
-    trj_lurus(kL3, L3_x, L3_y, L3_z, -40, -5, -90); // 100
-    trj_lurus(kR2, R2_x, R2_y, R2_z, 40, -5, -90);
-    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, med, 20000);
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 80, 0, -80); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, 0, -80); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 30000);
+}
+void coba_putar_kananv3()
+{
+    // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 80, -15, -40);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, -15, -40);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 80, -15, -40);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 80, 0, -80); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, 0, -80); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 40000);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 80, -15, -40);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, -15, -40);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 80, -15, -40);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 80, 0, -80); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, 0, -80); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 40000);
+}
+void coba_putar_kiriv2(){
+     // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 80, 15, -40);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, 15, -40);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 80, 15, -40);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 80, 0, -80); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, 0, -80); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 20000);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 80, 15, -40);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, 15, -40);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 80, 15, -40);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 80, 0, -80); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, 0, -80); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 30000);
+}
+void coba_putar_kiriv3(){
+     // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 80, 15, -40);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, 15, -40);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 80, 15, -40);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 80, 0, -80); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, 0, -80); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 40000);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 80, 15, -40);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, 15, -40);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 80, 15, -40);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 80, 0, -80); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, 0, -80); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 40000);
+}
+void siapv2()
+{
+    trj_lurus(kR1, 80, -60, -60, 80, -60, -60);
+    trj_lurus(kR2, 80, 0, -60, 80, 0, -60);
+    trj_lurus(kR3, 80, 60, -60, 80, 60, -60);
+
+    trj_lurus(kL1, 80, 60, -60, 80, 60, -60);
+    trj_lurus(kL2, 80, 0, -60, 80, 0, -60);
+    trj_lurus(kL3, 80, -60, -60, 80, -60, -60);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 25000);
+}
+void siapv3()
+{
+    trj_lurus(kR1, 80, -10, -80, 80, -10, -80);
+    trj_lurus(kR2, 80, 0, -80, 80, 0, -80);
+    trj_lurus(kR3, 80, 40, -80, 80, 40, -80);
+
+    trj_lurus(kL1, 80, 10, -80, 80, 10, -80);
+    trj_lurus(kL2, 80, 0, -80, 80, 0, -80);
+    trj_lurus(kL3, 80, -40, -80, 80, -40, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 25000);
+}
+void coba_majuv3()
+{
+            // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 90, -20, -30);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, -40, -30);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 80, 40, -30);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 90, -20, -80); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, 0, -60); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 80, 0, -60);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 40000);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 90, 10, -30);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, 40, -30);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 80, -40, -30);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 90, 20, -80); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, 0, -60); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 80, 0, -60);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 40000);
+//     // kanan
+//     trj_langkah(kL1, L1_x, L1_y, L1_z, 80, 30, -30);
+//     trj_langkah(kL3, L3_x, L3_y, L3_z, 80, -70, -30);
+//     trj_langkah(kR2, R2_x, R2_y, R2_z, 80, 15, -30);
+
+//     trj_lurus(kR1, R1_x, R1_y, R1_z, 80, -50, -60); // 90
+//     trj_lurus(kR3, R3_x, R3_y, R3_z, 80, 40, -70); // 90
+//     trj_lurus(kL2, L2_x, L2_y, L2_z, 80, 0, -60);
+//     trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 20000);
+
+//     trj_langkah(kR1, R1_x, R1_y, R1_z, 80, -30, -30);
+//     trj_langkah(kR3, R3_x, R3_y, R3_z, 80, 70, -40);
+//     trj_langkah(kL2, L2_x, L2_y, L2_z, 80, -15, -30);
+
+//     trj_lurus(kL1, L1_x, L1_y, L1_z, 80, 50, -60); // 95
+//     trj_lurus(kL3, L3_x, L3_y, L3_z, 80, -40, -60); // 100
+//     trj_lurus(kR2, R2_x, R2_y, R2_z, 80, 0, -60);
+//     trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 20000);
+}
+void coba_majuv33()
+{
+    // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 90, -20, -40);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, -40, -40);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 80, 40, -40);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 90, -20, -90); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, 0, -80); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 40000);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 90, 10, -40);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, 40, -40);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 80, -40, -40);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 90, 20, -90); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, 0, -80); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 40000);
+}
+void coba_mundurv3()
+{
+    // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 80, 30, -30);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, 0, -30);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 80, -15, -30);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 80, -10, -60); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, 40, -60); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 80, 0, -60);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 30000);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 80, -30, -30);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, 0, -30);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 80, 15, -30);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 80, 10, -60); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, -40, -60); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 80, 0, -60);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 30000);
+}
+void coba_mundurv4()
+{
+    // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 80, 30, -40);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, 0, -40);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 80, -15, -40);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 80, -10, -80); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, 40, -80); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 30000);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 80, -30, -40);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, 0, -40);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 80, 15, -40);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 80, 10, -80); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, -40, -80); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 30000);
+}
+void coba_majuv2()
+{
+    // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 80, 25, -40);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, -25, -40);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 80, 15, -40);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 80, -40, -60); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, 10, -60); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 80, 0, -60);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 20000);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 80, -25, -40);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, 25, -40);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 80, -15, -40);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 80, 40, -60); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, -10, -60); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 80, 0, -60);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 20000);
+}
+
+void coba_maju()
+{
+    // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 80, -35, -30);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, 35, -30);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 120, 0, -30);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 80, 35, -60); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, -35, -60); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 120, 0, -60);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 20000);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 80, -35, -30);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, 35, -30);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 70, 0, -30);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 80, 0, -60); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, 0, -60); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 70, 0, -60);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 20000);
+}
+void coba_maju2()
+{
+    // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 80, -35, -40);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, 35, -40);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 120, 0, -40);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 80, 35, -80); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, -35, -80); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 120, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 35000);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 80, -35, -40);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, 35, -40);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 70, 0, -40);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 80, 0, -80); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, 0, -80); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 70, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 35000);
+}
+void coba_maju1()
+{
+    // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 80, 30, -40);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, -30, -40);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 70, 0, -40);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 80, 0, -80); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, 0, -80); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 70, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 35000);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 80, 30, -40);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, -30, -40);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 100, 0, -40);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 80, 0, -80); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, 0, -80); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 115, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 35000);
+}
+
+void coba_majurintangan()
+{
+    // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 80, -40, -40);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, 40, -40);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 125, 0, -40);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 80, 35, -80); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, -35, -80); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 120, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 40000);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 80, -40, -40);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, 40, -40);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 70, 0, -40);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 80, 0, -80); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, 0, -80); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 70, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 40000);
+}
+void coba_majurintangan1()
+{
+    // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 90, -30, -40);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, 30, -40);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 80, 0, -40);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 90, 35, -80); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, -35, -80); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 35000);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 90, -30, -40);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, 30, -40);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 80, 0, -40);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 90, 0, -80); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, 0, -80); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 35000);
+}
+void coba_mundur()
+{
+    // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 80, 35, -40);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 80, -35, -40);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 60, 0, -40);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 80, 0, -80); // 90
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 80, 0, -80); // 90
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 35000);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 80, 35, -40);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 80, -35, -40);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 120, 0, -40);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 80, 0, -80); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 80, 0, -80); // 100
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 80, 0, -80);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 35000);
 }
 
 void mundur_robot()
 {
     // MUNDUR //belum buat
-    trj_langkah(kL1, L1_x, L1_y, L1_z, -40, -10, -60);
-    trj_langkah(kL3, L3_x, L3_y, L3_z, -40, -10, -60);
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 40, 10, -60);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 40, 10, -60);
     trj_langkah(kR2, R2_x, R2_y, R2_z, 40, -10, -60);
 
     trj_lurus(kR1, R1_x, R1_y, R1_z, 40, 0, -95); // 90
     trj_lurus(kR3, R3_x, R3_y, R3_z, 40, 0, -70); // 90
-    trj_lurus(kL2, L2_x, L2_y, L2_z, -40, 0, -90);
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 40, 0, -90);
 
-    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, med, 15000);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 15000);
 
     trj_langkah(kR1, R1_x, R1_y, R1_z, 40, -10, -60);
     trj_langkah(kR3, R3_x, R3_y, R3_z, 40, -10, -60);
-    trj_langkah(kL2, L2_x, L2_y, L2_z, -40, -10, -60);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 40, 10, -60);
 
-    trj_lurus(kL1, L1_x, L1_y, L1_z, -40, 0, -90); // 95
-    trj_lurus(kL3, L3_x, L3_y, L3_z, -40, 0, -90); // 100
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 40, 0, -90); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 40, 0, -90); // 100
     trj_lurus(kR2, R2_x, R2_y, R2_z, 40, 0, -90);
 
-    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, med, 15000);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 15000);
 }
 
 void kiri_robot()
 {
-    // langkah kaki kiri
-    trj_langkah(kL1, L1_x, L1_y, L1_z, -60, 0, -60); // x0,y0,x1,y1,z0,zp
-    trj_langkah(kL3, L3_x, L3_y, L3_z, -60, 0, -60);
-    trj_langkah(kR2, R2_x, R2_y, R2_z, 30, 0, -60);
-    // geser kaki kanan
-    trj_lurus(kR1, R1_x, R1_y, R1_z, 60, 0, -95); // 90
-    trj_lurus(kR3, R3_x, R3_y, R3_z, 60, 0, -70); // 90
-    trj_lurus(kL2, L2_x, L2_y, L2_z, -30, 0, -90);
+    // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 30, 0, -60);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 30, 0, -60);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 50, 0, -60);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 40, 0, -80); // 40
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 40, 0, -80); // 40
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 40, 0, -80);
     trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 15000);
-    // langkah kaki kanan
-    trj_langkah(kR1, R1_x, R1_y, R1_z, 30, 0, -60);
-    trj_langkah(kR3, R3_x, R3_y, R3_z, 30, 0, -60);
-    trj_langkah(kL2, L2_x, L2_y, L2_z, -60, 0, -60);
-    // geser kaki kanan
-    trj_lurus(kL1, L1_x, L1_y, L1_z, -30, 0, -90); // 95
-    trj_lurus(kL3, L3_x, L3_y, L3_z, -30, 0, -90); // 100
-    trj_lurus(kR2, R2_x, R2_y, R2_z, 60, 0, -90);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 50, 0, -60);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 50, 0, -60);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 30, 0, -60);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 40, 0, -80); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 40, 0, -80); // 00
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 40, 0, -80);
     trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 15000);
 }
 
 void kanan_robot()
 {
-    // langkah kaki kiri
-    trj_langkah(kL1, L1_x, L1_y, L1_z, -30, 0, -60); // x0,y0,x1,y1,z0,zp
-    trj_langkah(kL3, L3_x, L3_y, L3_z, -30, 0, -60);
-    trj_langkah(kR2, R2_x, R2_y, R2_z, 60, 0, -60);
-    // geser kaki kanan
-    trj_lurus(kR1, R1_x, R1_y, R1_z, 30, 0, -95); // 90
-    trj_lurus(kR3, R3_x, R3_y, R3_z, 30, 0, -70); // 90
-    trj_lurus(kL2, L2_x, L2_y, L2_z, -60, 0, -90);
+    // kanan
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 30, 0, -60);
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 30, 0, -60);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 50, 0, -60);
+
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 40, 0, -80); // 40
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 40, 0, -80); // 40
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 40, 0, -80);
     trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 15000);
-    // langkah kaki kanan
-    trj_langkah(kR1, R1_x, R1_y, R1_z, 60, 0, -60);
-    trj_langkah(kR3, R3_x, R3_y, R3_z, 60, 0, -60);
-    trj_langkah(kL2, L2_x, L2_y, L2_z, -30, 0, -60);
-    // geser kaki kanan
-    trj_lurus(kL1, L1_x, L1_y, L1_z, -60, 0, -90); // 95
-    trj_lurus(kL3, L3_x, L3_y, L3_z, -60, 0, -90); // 100
-    trj_lurus(kR2, R2_x, R2_y, R2_z, 30, 0, -90);
+
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 50, 0, -60);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 50, 0, -60);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 30, 0, -60);
+
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 40, 0, -80); // 95
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 40, 0, -80); // 00
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 40, 0, -80);
     trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 15000);
 }
 
+void coba_putar_kanan()
+{
+
+    // langkah kaki kiri
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 40, -15, -75); // x0,y0,x1,y1,z0,zp
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 40, -15, -70);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 40, -15, -70);
+    // geser kaki kanan
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 40, 0, -95);
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 40, 0, -70);
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 40, 0, -90);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 15000);
+    // langkah kaki kanan
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 40, -15, -70);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 40, -15, -50);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 40, -15, -70);
+    // geser kaki kanan
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 40, 0, -90);
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 40, 0, -90);
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 40, 0, -90);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 15000);
+}
 void putar_kanan()
 {
 
@@ -502,7 +865,27 @@ void putar_kanan()
     trj_lurus(kR2, R2_x, R2_y, R2_z, 40, 0, -90);
     trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 15000);
 }
-
+void coba_putar_kiri()
+{
+    // langkah kaki kiri
+    trj_langkah(kL1, L1_x, L1_y, L1_z, 40, 15, -70); // x0,y0,x1,y1,z0,zp
+    trj_langkah(kL3, L3_x, L3_y, L3_z, 40, 15, -70);
+    trj_langkah(kR2, R2_x, R2_y, R2_z, 40, 15, -70);
+    // geser kaki kanan
+    trj_lurus(kR1, R1_x, R1_y, R1_z, 40, 0, -95);
+    trj_lurus(kR3, R3_x, R3_y, R3_z, 40, 0, -70);
+    trj_lurus(kL2, L2_x, L2_y, L2_z, 40, 0, -90);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 15000);
+    // langkah kaki kanan
+    trj_langkah(kR1, R1_x, R1_y, R1_z, 40, 15, -75);
+    trj_langkah(kR3, R3_x, R3_y, R3_z, 40, 15, -50);
+    trj_langkah(kL2, L2_x, L2_y, L2_z, 40, 15, -70);
+    // geser kaki kanan
+    trj_lurus(kL1, L1_x, L1_y, L1_z, 40, 0, -90);
+    trj_lurus(kL3, L3_x, L3_y, L3_z, 40, 0, -90);
+    trj_lurus(kR2, R2_x, R2_y, R2_z, 40, 0, -90);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 15000);
+}
 void putar_kiri()
 {
     // langkah kaki kiri
@@ -513,7 +896,7 @@ void putar_kiri()
     trj_lurus(kR1, R1_x, R1_y, R1_z, 40, 0, -95);
     trj_lurus(kR3, R3_x, R3_y, R3_z, 40, 0, -70);
     trj_lurus(kL2, L2_x, L2_y, L2_z, -40, 0, -90);
-    trj_start(kL1, kL2, kL3, kR1, kR2, kR3, ultra_fast, 15000);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 15000);
     // langkah kaki kanan
     trj_langkah(kR1, R1_x, R1_y, R1_z, 40, 15, -75);
     trj_langkah(kR3, R3_x, R3_y, R3_z, 40, 15, -50);
@@ -522,7 +905,7 @@ void putar_kiri()
     trj_lurus(kL1, L1_x, L1_y, L1_z, -40, 0, -90);
     trj_lurus(kL3, L3_x, L3_y, L3_z, -40, 0, -90);
     trj_lurus(kR2, R2_x, R2_y, R2_z, 40, 0, -90);
-    trj_start(kL1, kL2, kL3, kR1, kR2, kR3, ultra_fast, 15000);
+    trj_start(kR1, kR2, kR3, kL1, kL2, kL3, ultra_fast, 15000);
 }
 
 void tanggav2()
